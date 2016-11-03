@@ -1,8 +1,8 @@
 <?php
 
 // Define your username and password
-$username = "droz";
-$password = "monkey";
+$username = "name";
+$password = "password";
 
 if ($_POST['txtUsername'] != $username || $_POST['txtPassword'] != $password) {
 
@@ -92,22 +92,18 @@ else {
 $which_door = $_GET['door'];
 //echo 'which door? ' .  $which_door;
 
-if (isset($_POST['DoorAOPEN']))
+if (isset($_POST['RightOPEN']))
 {
-exec("sudo python /home/pi/garagedoorA.py");
+exec("sudo python /home/pi/garagedoorright.py");
 }
-if (isset($_POST['DoorBOPEN']))
+if (isset($_POST['LeftOPEN']))
 {
-exec("sudo python /home/pi/garagedoorB.py");
-}
-if (isset($_POST['DoorCOPEN']))
-{
-exec("sudo python /home/pi/garagedoorC.py");
+exec("sudo python /home/pi/garagedoorleft.py");
 }
 
 unset($_POST);
 //echo "<hr />";
-//echo "<strong>Door A = ".isset($_POST['DoorAOPEN'])."</strong><br /><strong>Door B = ".isset($_POST['DoorBOPEN'])."</strong><br /><strong>Door C = ".isset($_POST['DoorCOPEN'])."</strong>";
+//echo "<strong>Right = ".isset($_POST['RightOPEN'])."</strong><br /><strong>Left = ".isset($_POST['LeftOPEN'])."</strong>";
 ?>
 
 <!doctype html>
@@ -123,16 +119,12 @@ unset($_POST);
 <body>
 
 <table align="center" cellpadding="25"><tr><td>
-	<form method="post" action="javascript:callA()">
-		<input type="submit" class="classname" value="OPEN A" />
+	<form method="post" action="javascript:callLeft()">
+		<input type="submit" class="classname" value="OPEN LEFT" />
 	</form>
 </td><td>
-	<form method="post" action="javascript:callB()">
-		<input type="submit" class="classname" value="OPEN B" />
-	</form>
-</td><td>
-	<form method="post" action="javascript:callC()">
-		<input type="submit" class="classname" value="OPEN C" />
+	<form method="post" action="javascript:callRight()">
+		<input type="submit" class="classname" value="OPEN RIGHT" />
 	</form>
 </td></tr></table>
 
@@ -144,43 +136,32 @@ var theDoor = "<?= $which_door; ?>";
 $('#garageHolder').attr('class', '');
 switch(theDoor)
 {
-	case 'a' :
-		$('#garageHolder').addClass('open a')
+	case 'left' :
+		$('#garageHolder').addClass('open left')
 	break;
 	
-	case 'b' :
-		$('#garageHolder').addClass('open b')
-	break;
-		
-	case 'c' :
-		$('#garageHolder').addClass('open c')
+	case 'right' :
+		$('#garageHolder').addClass('open right')
 	break;
 }
  
-function callA()
+function callLeft()
 {
 	$.ajax({
-		url: 'doorA.php',
+		url: 'left.php',
 		success: loadDataSuccess,
 		error : loadError
 	});
 }
 
-function callB()
+function callRight()
 {
 	$.ajax({
-		url: 'doorB.php',
+		url: 'right.php',
 		success: loadDataSuccess,
 		error : loadError
 	});
-
-	function callC()
-{
-	$.ajax({
-		url: 'doorC.php',
-		success: loadDataSuccess,
-		error : loadError
-	});	
+	
 }
 
 function loadError(jqXHR, textStatus, errorThrown)
